@@ -13,13 +13,19 @@ let inputData = [];
  */
 router.post("/", (req, res) => {
   const newInputs = req.body;
-  console.log(newInputs);
-  
+
   if (Array.isArray(newInputs)) {
     inputData = [...inputData, ...newInputs];
-    res.status(201).json({ message: "Datos de Input guardados correctamente", data: newInputs });
+    res
+      .status(201)
+      .json({
+        message: "Datos de Input guardados correctamente",
+        data: newInputs,
+      });
   } else {
-    res.status(400).json({ message: "Formato incorrecto. Debe ser una lista de objetos." });
+    res
+      .status(400)
+      .json({ message: "Formato incorrecto. Debe ser una lista de objetos." });
   }
 });
 
@@ -28,7 +34,9 @@ router.post("/", (req, res) => {
  * Ruta para obtener todos los datos de Input almacenados.
  */
 router.get("/", (req, res) => {
-  res.status(200).json({ message: "Datos de Input obtenidos", data: inputData });
+  res
+    .status(200)
+    .json({ message: "Datos de Input obtenidos", data: inputData });
 });
 
 module.exports = router;
