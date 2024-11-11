@@ -1,6 +1,8 @@
 // server.js
 // Configuración del servidor utilizando Express. Permite la comunicación entre el frontend y el backend mediante una API REST.
 
+require("dotenv").config(); // Cargar variables de entorno al inicio
+
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");

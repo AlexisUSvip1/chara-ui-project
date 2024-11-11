@@ -3,8 +3,8 @@
 
 import axios from "axios";
 
-// URL base de la API
-const API_BASE_URL = "http://localhost:3000/api";
+// URL base de la API desde variables de entorno
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 /**
  * postData
