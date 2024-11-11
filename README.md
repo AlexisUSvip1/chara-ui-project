@@ -145,6 +145,17 @@ Este comando ejecutará las pruebas del proyecto.
 ```bash 
 yarn test
 ```
+- Cuarto paso
+Ejecutar api en node:
+Este comando ejecutará la api en node (recuerda tener el mismo puerto en el env de node (v. >=21.1.0 y en el env de el frontend)
+
+```bash 
+node server.js
+```
+Debera salir un mensaje tipo
+```bash 
+Servidor en funcionamiento en http://localhost:3000
+```
 ### Uso
 Una vez que la aplicación esté en ejecución:
 
