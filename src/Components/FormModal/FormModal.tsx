@@ -1,7 +1,15 @@
 // ReusableFormModal.tsx
 // Modal reutilizable para crear diferentes tipos de componentes de formularios, como Input, Checkbox y Select.
 
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Stack } from "@chakra-ui/react";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  Stack,
+} from "@chakra-ui/react";
 import { FormModalProps } from "./FormModal.types";
 import { styles } from "./FormModal.style";
 import { InputForm } from "../ComponentsUI/Input/Input";
@@ -19,23 +27,38 @@ import { SelectForm } from "../ComponentsUI/Select/Select";
  * @param {string} props.title - Título del modal, que define el tipo de formulario que se mostrará.
  * @returns {JSX.Element} - Componente Modal que renderiza el formulario correspondiente.
  */
-export const FormModal: React.FC<FormModalProps> = ({ isOpen, onClose, title }) => {
+export const FormModal: React.FC<FormModalProps> = ({
+  isOpen,
+  onClose,
+  title,
+}: FormModalProps): JSX.Element => {
   // Ajuste de altura basado en el tipo de componente
-  const modalHeight = title.toLowerCase() === "select option" ? ["100%", "700px"] : ["90%", "500px"]; 
+  const modalHeight =
+    title.toLowerCase() === "select option"
+      ? ["100%", "700px"]
+      : ["90%", "500px"];
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered size={{ base: "xs", md: "lg" }}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      isCentered
+      size={{ base: "xs", md: "lg" }}
+    >
       <ModalOverlay bg="rgba(0, 0, 0, 0.6)" backdropFilter="blur(10px)" />
       <ModalContent {...styles.containerModal} height={modalHeight}>
         <ModalCloseButton />
-        <ModalHeader {...styles.modalHeader} fontSize={{ base: "lg", md: "2xl" }}>
+        <ModalHeader
+          {...styles.modalHeader}
+          fontSize={{ base: "lg", md: "2xl" }}
+        >
           Crear tu componente {title}
         </ModalHeader>
         <ModalBody>
           <Stack spacing={4}>
             {title === "Input" ? (
-              <InputForm />  
-            ) : title.toLowerCase() === "checkbox" ? (         
+              <InputForm />
+            ) : title.toLowerCase() === "checkbox" ? (
               <CheckboxForm />
             ) : (
               <SelectForm />

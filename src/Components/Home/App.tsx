@@ -1,9 +1,9 @@
 // App.js
 // Componente principal de la aplicación que sirve como bienvenida y permite al usuario generar componentes interactivos.
 
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Text } from "@chakra-ui/react";
 import { styles } from "./App.style";
-import { Preview } from '../PreviewContainer/PreviewContainer';
+import { Preview } from "../PreviewContainer/PreviewContainer";
 
 /**
  * App
@@ -12,7 +12,7 @@ import { Preview } from '../PreviewContainer/PreviewContainer';
  * @component
  * @returns {JSX.Element} - Estructura de la interfaz principal con el saludo y el generador de componentes.
  */
-function App() {
+function App(): JSX.Element {
   return (
     <>
       <Box mt={30} p={4} {...styles.container}>

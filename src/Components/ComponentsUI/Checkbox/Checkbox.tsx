@@ -14,7 +14,7 @@ import { useCheckbox } from "./Checkbox.hooks";
  * @component
  * @returns {JSX.Element} - Formulario de Checkbox con inputs, opciones de checkbox y botón de guardar.
  */
-export const CheckboxForm = () => {
+export const CheckboxForm = (): JSX.Element => {
   const {
     checkboxId,
     setCheckboxId,
@@ -30,9 +30,17 @@ export const CheckboxForm = () => {
 
   return (
     <>
-      <Container width="100%" padding={0} display="flex" flexDirection="column" gap={5}>
+      <Container
+        width="100%"
+        padding={0}
+        display="flex"
+        flexDirection="column"
+        gap={5}
+      >
         <Box>
-          <Text mb={1} {...styles.labelStyle}>Ingresa un ID único para tu custom Checkbox</Text>
+          <Text mb={1} {...styles.labelStyle}>
+            Ingresa un ID único para tu custom Checkbox
+          </Text>
           <Input
             placeholder="ID de tu custom checkbox"
             value={checkboxId}
@@ -41,7 +49,9 @@ export const CheckboxForm = () => {
           />
         </Box>
         <Box>
-          <Text mb={1} {...styles.labelStyle}>Ingresa el nombre de tu label</Text>
+          <Text mb={1} {...styles.labelStyle}>
+            Ingresa el nombre de tu label
+          </Text>
           <Input
             placeholder="Label de tu custom checkbox"
             value={label}
@@ -50,12 +60,22 @@ export const CheckboxForm = () => {
           />
         </Box>
         <Box>
-          <Text mb={1} fontWeight="bold">¿Es checkado este campo?</Text>
+          <Text mb={1} fontWeight="bold">
+            ¿Es checkado este campo?
+          </Text>
           <Box display="flex" alignItems="center">
             <Text mr={2}>Sí</Text>
-            <Checkbox isChecked={isChecked === true} onChange={() => setIsChecked(true)} />
-            <Text ml={4} mr={2}>No</Text>
-            <Checkbox isChecked={isChecked === false} onChange={() => setIsChecked(false)} />
+            <Checkbox
+              isChecked={isChecked === true}
+              onChange={() => setIsChecked(true)}
+            />
+            <Text ml={4} mr={2}>
+              No
+            </Text>
+            <Checkbox
+              isChecked={isChecked === false}
+              onChange={() => setIsChecked(false)}
+            />
           </Box>
         </Box>
       </Container>

@@ -15,7 +15,7 @@ import { styles } from "./Select.styles";
  * @component
  * @returns {JSX.Element} - Formulario de configuración de un select, incluyendo ID, label, placeholder y opciones.
  */
-export const SelectForm = () => {
+export const SelectForm = (): JSX.Element => {
   const {
     options,
     selectId,
@@ -31,14 +31,21 @@ export const SelectForm = () => {
   } = useSelect();
 
   // Validación del formulario: todos los campos deben estar completos
-  const areOptionsValid = options.every(option => option.label.trim() !== "");
-  const isFormValid = label.trim() && selectId.trim() && placeholder.trim() && options.length !== 0 && areOptionsValid;
+  const areOptionsValid = options.every((option) => option.label.trim() !== "");
+  const isFormValid =
+    label.trim() &&
+    selectId.trim() &&
+    placeholder.trim() &&
+    options.length !== 0 &&
+    areOptionsValid;
 
   return (
     <>
       <Container {...styles.container}>
         <Box>
-          <Text {...styles.labelStyle}>Ingresa un ID único para tu custom Select</Text>
+          <Text {...styles.labelStyle}>
+            Ingresa un ID único para tu custom Select
+          </Text>
           <Input
             placeholder="ID de tu custom Select"
             maxLength={30}
@@ -48,7 +55,9 @@ export const SelectForm = () => {
           />
         </Box>
         <Box>
-          <Text {...styles.labelStyle}>Ingresa el nombre de tu select option</Text>
+          <Text {...styles.labelStyle}>
+            Ingresa el nombre de tu select option
+          </Text>
           <Input
             placeholder="Label de tu custom Select"
             value={label}
@@ -58,7 +67,9 @@ export const SelectForm = () => {
           />
         </Box>
         <Box>
-          <Text {...styles.labelStyle}>Ingresa el placeholder de tu select option</Text>
+          <Text {...styles.labelStyle}>
+            Ingresa el placeholder de tu select option
+          </Text>
           <Input
             placeholder="placeholder de tu custom Select"
             value={placeholder}
@@ -68,31 +79,43 @@ export const SelectForm = () => {
           />
         </Box>
 
-        <Box display="flex" alignItems="center" gap={2} mt={4} justifyContent="space-between">
-          <Box display="flex" alignItems="center" gap={5} mt={4}> 
+        <Box
+          display="flex"
+          alignItems="center"
+          gap={2}
+          mt={4}
+          justifyContent="space-between"
+        >
+          <Box display="flex" alignItems="center" gap={5} mt={4}>
             <Text {...styles.labelStyle}>Cantidad de options</Text>
-            <Input 
-              type="number" 
-              width="80px" 
-              textAlign="center" 
-              value={options.length} 
-              isReadOnly 
+            <Input
+              type="number"
+              width="80px"
+              textAlign="center"
+              value={options.length}
+              isReadOnly
               maxLength={30}
-              aria-label="Cantidad de options" 
-              {...styles.inputStyle} 
+              aria-label="Cantidad de options"
+              {...styles.inputStyle}
             />
           </Box>
-          <IconButton 
-            icon={<AddIcon />} 
-            aria-label="Agregar opción" 
-            onClick={addOption} 
+          <IconButton
+            icon={<AddIcon />}
+            aria-label="Agregar opción"
+            onClick={addOption}
             {...styles.iconButtonStyle}
           />
         </Box>
 
         <Box mt={4} {...styles.optionsContent}>
           {options.map((option) => (
-            <Box key={option.id} display="flex" alignItems="center" gap={2} mb={2}>
+            <Box
+              key={option.id}
+              display="flex"
+              alignItems="center"
+              gap={2}
+              mb={2}
+            >
               <Input
                 placeholder={`Opción ${option.id}`}
                 value={option.label}
@@ -113,11 +136,11 @@ export const SelectForm = () => {
       </Container>
 
       <Box {...styles.containerComponent}>
-        <SaveButton 
-          title="select" 
-          onClick={handleSave} 
-          colorScheme="green" 
-          borderRadius={30} 
+        <SaveButton
+          title="select"
+          onClick={handleSave}
+          colorScheme="green"
+          borderRadius={30}
           isDisabled={!isFormValid}
         />
       </Box>
