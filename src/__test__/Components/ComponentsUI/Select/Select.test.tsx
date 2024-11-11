@@ -1,78 +1,111 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import { SelectForm } from '../../../../Components/ComponentsUI/Select/Select';
+// src/__tests__/Components/ComponentsUI/Select/SelectForm.test.tsx
+// Pruebas unitarias para el componente SelectForm
 
-describe('SelectForm', () => {
-  it('renders all input fields and options counter', () => {
+import { render, screen, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import { SelectForm } from "../../../../Components/ComponentsUI/Select/Select";
+
+describe("SelectForm", () => {
+  // Verifica que todos los campos de entrada y el contador de opciones estén presentes en el componente
+  it("renders all input fields and options counter", () => {
     render(<SelectForm />);
-    expect(screen.getByPlaceholderText('ID de tu custom Select')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Label de tu custom Select')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('placeholder de tu custom Select')).toBeInTheDocument();
-    expect(screen.getByLabelText('Cantidad de options')).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText("ID de tu custom Select")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText("Label de tu custom Select")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText("placeholder de tu custom Select")
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText("Cantidad de options")).toBeInTheDocument();
   });
 
-  it('disables save button if required fields are missing', () => {
+  // Asegura que el botón de guardar esté deshabilitado cuando faltan campos requeridos
+  it("disables save button if required fields are missing", () => {
     render(<SelectForm />);
-    const saveButton = screen.getByRole('button', { name: /guardar componente select/i });
+    const saveButton = screen.getByRole("button", {
+      name: /guardar componente select/i,
+    });
     expect(saveButton).toBeDisabled();
   });
 
-  it('enables save button when required fields are filled', () => {
+  // Activa el botón de guardar cuando se completan los campos requeridos
+  it("enables save button when required fields are filled", () => {
     render(<SelectForm />);
-    const idInput = screen.getByPlaceholderText('ID de tu custom Select');
-    const labelInput = screen.getByPlaceholderText('Label de tu custom Select');
-    const placeholderInput = screen.getByPlaceholderText('placeholder de tu custom Select');
-    const addOptionButton = screen.getByRole('button', { name: /agregar opción/i }); // Cambiado a "Agregar opción"
+    const idInput = screen.getByPlaceholderText("ID de tu custom Select");
+    const labelInput = screen.getByPlaceholderText("Label de tu custom Select");
+    const placeholderInput = screen.getByPlaceholderText(
+      "placeholder de tu custom Select"
+    );
+    const addOptionButton = screen.getByRole("button", {
+      name: /agregar opción/i,
+    });
 
-    fireEvent.change(idInput, { target: { value: 'Test ID' } });
-    fireEvent.change(labelInput, { target: { value: 'Test Label' } });
-    fireEvent.change(placeholderInput, { target: { value: 'Test Placeholder' } });
+    fireEvent.change(idInput, { target: { value: "Test ID" } });
+    fireEvent.change(labelInput, { target: { value: "Test Label" } });
+    fireEvent.change(placeholderInput, {
+      target: { value: "Test Placeholder" },
+    });
     fireEvent.click(addOptionButton);
 
-    const saveButton = screen.getByRole('button', { name: /guardar componente select/i });
+    const saveButton = screen.getByRole("button", {
+      name: /guardar componente select/i,
+    });
     expect(saveButton).toBeDisabled();
   });
 
-  it('keeps save button disabled if only spaces are entered in required fields', () => {
+  // Asegura que el botón de guardar esté deshabilitado si solo se ingresan espacios en los campos requeridos
+  it("keeps save button disabled if only spaces are entered in required fields", () => {
     render(<SelectForm />);
-    const idInput = screen.getByPlaceholderText('ID de tu custom Select');
-    const labelInput = screen.getByPlaceholderText('Label de tu custom Select');
-    const placeholderInput = screen.getByPlaceholderText('placeholder de tu custom Select');
+    const idInput = screen.getByPlaceholderText("ID de tu custom Select");
+    const labelInput = screen.getByPlaceholderText("Label de tu custom Select");
+    const placeholderInput = screen.getByPlaceholderText(
+      "placeholder de tu custom Select"
+    );
 
-    fireEvent.change(idInput, { target: { value: '   ' } });
-    fireEvent.change(labelInput, { target: { value: '   ' } });
-    fireEvent.change(placeholderInput, { target: { value: '   ' } });
+    fireEvent.change(idInput, { target: { value: "   " } });
+    fireEvent.change(labelInput, { target: { value: "   " } });
+    fireEvent.change(placeholderInput, { target: { value: "   " } });
 
-    const saveButton = screen.getByRole('button', { name: /guardar componente select/i });
+    const saveButton = screen.getByRole("button", {
+      name: /guardar componente select/i,
+    });
     expect(saveButton).toBeDisabled();
   });
 
-  it('prevents negative numbers in the options count', () => {
+  // Previene la introducción de números negativos en el contador de opciones
+  it("prevents negative numbers in the options count", () => {
     render(<SelectForm />);
-    const optionsCountInput = screen.getByLabelText('Cantidad de options');
-    fireEvent.change(optionsCountInput, { target: { value: '-1' } });
-    expect(optionsCountInput).toHaveValue(0); // Asegura que el valor no puede ser negativo
+    const optionsCountInput = screen.getByLabelText("Cantidad de options");
+    fireEvent.change(optionsCountInput, { target: { value: "-1" } });
+    expect(optionsCountInput).toHaveValue(0);
   });
 
-  it('limits each input field to a maximum of 30 characters', () => {
+  // Limita cada campo de entrada a un máximo de 30 caracteres
+  it("limits each input field to a maximum of 30 characters", () => {
     render(<SelectForm />);
-    const idInput = screen.getByPlaceholderText('ID de tu custom Select');
-    const labelInput = screen.getByPlaceholderText('Label de tu custom Select');
-    const placeholderInput = screen.getByPlaceholderText('placeholder de tu custom Select');
-    const addOptionButton = screen.getByRole('button', { name: /agregar opción/i });
+    const idInput = screen.getByPlaceholderText("ID de tu custom Select");
+    const labelInput = screen.getByPlaceholderText("Label de tu custom Select");
+    const placeholderInput = screen.getByPlaceholderText(
+      "placeholder de tu custom Select"
+    );
+    const addOptionButton = screen.getByRole("button", {
+      name: /agregar opción/i,
+    });
 
-    const longText = 'Este texto es más largo que treinta caracteres';
+    const longText = "Este texto es más largo que treinta caracteres";
 
-    // Cambiando los valores de los inputs y verificando truncamiento
     fireEvent.change(idInput, { target: { value: longText.slice(0, 30) } });
     fireEvent.change(labelInput, { target: { value: longText.slice(0, 30) } });
-    fireEvent.change(placeholderInput, { target: { value: longText.slice(0, 30) } });
+    fireEvent.change(placeholderInput, {
+      target: { value: longText.slice(0, 30) },
+    });
     fireEvent.click(addOptionButton);
 
-    const optionInput = screen.getByPlaceholderText('Opción 1');
+    const optionInput = screen.getByPlaceholderText("Opción 1");
     fireEvent.change(optionInput, { target: { value: longText.slice(0, 30) } });
 
-    // Verificaciones de truncamiento
     expect(idInput).toHaveValue(longText.slice(0, 30));
     expect(labelInput).toHaveValue(longText.slice(0, 30));
     expect(placeholderInput).toHaveValue(longText.slice(0, 30));

@@ -1,37 +1,76 @@
-import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import { CounterComponents } from '../../../../Components/FormModal/ShowComponentsUI/CounterComponents';
+// src/__tests__/Components/FormModal/ShowComponentsUI/CounterComponents.test.tsx
+// Pruebas unitarias para el componente CounterComponents.
 
-describe('CounterComponents', () => {
+import { render, screen } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
+import { CounterComponents } from "../../../../Components/FormModal/ShowComponentsUI/CounterComponents";
+
+describe("CounterComponents", () => {
+  // Datos simulados para pruebas que representan un input y un checkbox
   const mockData = [
-    { type: 'input', props: { id: '1', label: 'First Input', placeholder: 'Enter text', isRequired: true } },
-    { type: 'checkbox', props: { id: '2', label: 'Agree to Terms', isChecked: true } },
+    {
+      type: "input",
+      props: {
+        id: "1",
+        label: "First Input",
+        placeholder: "Enter text",
+        isRequired: true,
+      },
+    },
+    {
+      type: "checkbox",
+      props: { id: "2", label: "Agree to Terms", isChecked: true },
+    },
   ];
 
-  it('should render the CounterComponents modal with data', () => {
-    render(<CounterComponents isOpen={true} onClose={() => {}} title="Test Title" data={mockData} />);
-    
-    // Check that the modal title appears
-    expect(screen.getByText('Ver Componentes de Test Title')).toBeInTheDocument();
+  /**
+   * Prueba: Renderiza el modal con datos
+   * Verifica que el modal de CounterComponents renderice correctamente cuando se pasa data.
+   */
+  it("should render the CounterComponents modal with data", () => {
+    render(
+      <CounterComponents
+        isOpen={true}
+        onClose={() => {}}
+        title="Test Title"
+        data={mockData}
+      />
+    );
 
-    // Check that each item label appears
-    expect(screen.getByText('First Input')).toBeInTheDocument();
-    expect(screen.getByText('Agree to Terms')).toBeInTheDocument();
+    // Verifica que el título del modal aparece correctamente
+    expect(
+      screen.getByText("Ver Componentes de Test Title")
+    ).toBeInTheDocument();
 
-    // Check that input and checkbox are rendered correctly
-    const inputElement = screen.getByPlaceholderText('Enter text');
+    // Verifica que las etiquetas de los ítems de datos se muestran correctamente
+    expect(screen.getByText("First Input")).toBeInTheDocument();
+    expect(screen.getByText("Agree to Terms")).toBeInTheDocument();
+
+    // Verifica que el input y el checkbox se renderizan correctamente
+    const inputElement = screen.getByPlaceholderText("Enter text");
     expect(inputElement).toBeInTheDocument();
-    expect(inputElement).toHaveAttribute('readonly');
+    expect(inputElement).toHaveAttribute("readonly"); // Verifica que el input es de solo lectura
 
-    const checkboxElement = screen.getByRole('checkbox');
+    const checkboxElement = screen.getByRole("checkbox");
     expect(checkboxElement).toBeInTheDocument();
-    expect(checkboxElement).toBeChecked();
+    expect(checkboxElement).toBeChecked(); // Verifica que el checkbox está marcado
   });
 
-  it('should render BaseEmpty message when there is no data', () => {
-    render(<CounterComponents isOpen={true} onClose={() => {}} title="Test Title" data={[]} />);
+  /**
+   * Prueba: Renderiza BaseEmpty cuando no hay datos
+   * Verifica que el componente muestre el mensaje de BaseEmpty cuando la data está vacía.
+   */
+  it("should render BaseEmpty message when there is no data", () => {
+    render(
+      <CounterComponents
+        isOpen={true}
+        onClose={() => {}}
+        title="Test Title"
+        data={[]}
+      />
+    );
 
-    // Check for BaseEmpty component message
-    expect(screen.getByText('Aún no hay registros')).toBeInTheDocument();
+    // Verifica que se muestra el mensaje de BaseEmpty
+    expect(screen.getByText("Aún no hay registros")).toBeInTheDocument();
   });
 });

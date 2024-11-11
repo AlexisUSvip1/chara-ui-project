@@ -1,44 +1,52 @@
 // src/__test__/Components/ComponentsUI/Input/Input.hooks.test.ts
+// Pruebas unitarias para el hook useInput
+
 import { renderHook, act } from '@testing-library/react';
 import { useInput } from '../../../../Components/ComponentsUI/Input/useInput.hooks';
 import { vi } from 'vitest';
 import { postData } from '../../../../services/apiService';
 import { inputValidationSchema } from '../../../../Components/Utils/Validation/ValidateComponents.utils';
-// Mock para postData y useToast
+
+// Mock para las funciones postData y useToast
 vi.mock('../../../../services/apiService', () => ({
   postData: vi.fn(),
 }));
+
 const toastMock = vi.fn();
-vi.mock('@chakra-ui/react', () => ({
+vi.mock("@chakra-ui/react", () => ({
   useToast: () => toastMock,
 }));
+
 describe('useInput Hook', () => {
-  it('should initialize with default values', () => {
+  // Inicializa los valores por defecto
+  it("should initialize with default values", () => {
     const { result } = renderHook(() => useInput());
-    
-    expect(result.current.inputId).toBe('');
-    expect(result.current.label).toBe('');
-    expect(result.current.placeholder).toBe('');
+
+    expect(result.current.inputId).toBe("");
+    expect(result.current.label).toBe("");
+    expect(result.current.placeholder).toBe("");
     expect(result.current.isRequired).toBe(false);
   });
 
-  it('should update values correctly', () => {
+  // Actualiza los valores correctamente
+  it("should update values correctly", () => {
     const { result } = renderHook(() => useInput());
 
     act(() => {
-      result.current.setInputId('testId');
-      result.current.setLabel('testLabel');
-      result.current.setPlaceholder('testPlaceholder');
+      result.current.setInputId("testId");
+      result.current.setLabel("testLabel");
+      result.current.setPlaceholder("testPlaceholder");
       result.current.setIsRequired(true);
     });
 
-    expect(result.current.inputId).toBe('testId');
-    expect(result.current.label).toBe('testLabel');
-    expect(result.current.placeholder).toBe('testPlaceholder');
+    expect(result.current.inputId).toBe("testId");
+    expect(result.current.label).toBe("testLabel");
+    expect(result.current.placeholder).toBe("testPlaceholder");
     expect(result.current.isRequired).toBe(true);
   });
 
-  it('should call handleSave function', async () => {
+  // Llama a la función handleSave
+  it("should call handleSave function", async () => {
     const { result } = renderHook(() => useInput());
     const handleSaveMock = vi.fn(result.current.handleSave);
 
@@ -49,13 +57,14 @@ describe('useInput Hook', () => {
     expect(handleSaveMock).toHaveBeenCalled();
   });
 
-  it('should call handleSave successfully and show success toast', async () => {
+  // Muestra un mensaje de éxito al guardar correctamente
+  it("should call handleSave successfully and show success toast", async () => {
     const { result } = renderHook(() => useInput());
 
     act(() => {
-      result.current.setInputId('testId');
-      result.current.setLabel('testLabel');
-      result.current.setPlaceholder('testPlaceholder');
+      result.current.setInputId("testId");
+      result.current.setLabel("testLabel");
+      result.current.setPlaceholder("testPlaceholder");
       result.current.setIsRequired(true);
     });
 
@@ -67,11 +76,11 @@ describe('useInput Hook', () => {
 
     expect(postData).toHaveBeenCalledWith("input", [
       expect.objectContaining({
-        type: 'input',
+        type: "input",
         props: {
-          id: 'testId',
-          label: 'testLabel',
-          placeholder: 'testPlaceholder',
+          id: "testId",
+          label: "testLabel",
+          placeholder: "testPlaceholder",
           isRequired: true,
         },
       }),
@@ -86,14 +95,14 @@ describe('useInput Hook', () => {
     );
   });
 
-  it('should show validation error when data is invalid', async () => {
+  // Muestra un error de validación cuando los datos son inválidos
+  it("should show validation error when data is invalid", async () => {
     const { result } = renderHook(() => useInput());
 
-    // Mock para forzar un error de validación
-    vi.spyOn(inputValidationSchema, 'validate').mockRejectedValueOnce({
-      name: 'ValidationError',
-      message: 'Validation error',
-      errors: ['El campo label es requerido.'],
+    vi.spyOn(inputValidationSchema, "validate").mockRejectedValueOnce({
+      name: "ValidationError",
+      message: "Validation error",
+      errors: ["El campo label es requerido."],
     });
 
     await act(async () => {
@@ -109,17 +118,18 @@ describe('useInput Hook', () => {
     );
   });
 
-  it('should show API error when postData fails', async () => {
+  // Muestra un error de API si postData falla
+  it("should show API error when postData fails", async () => {
     const { result } = renderHook(() => useInput());
 
     act(() => {
-      result.current.setInputId('testId');
-      result.current.setLabel('testLabel');
-      result.current.setPlaceholder('testPlaceholder');
+      result.current.setInputId("testId");
+      result.current.setLabel("testLabel");
+      result.current.setPlaceholder("testPlaceholder");
       result.current.setIsRequired(true);
     });
-    // Mock para forzar un error en la API
-    (postData as jest.Mock).mockRejectedValueOnce(new Error('Server error'));
+
+    (postData as jest.Mock).mockRejectedValueOnce(new Error("Server error"));
 
     await act(async () => {
       await result.current.handleSave();
@@ -131,18 +141,20 @@ describe('useInput Hook', () => {
         description: "Hubo un problema al guardar el componente input.",
         status: "error",
         duration: 4000,
-          isClosable: true,
-          position: "top",
+        isClosable: true,
+        position: "top",
       })
     );
   });
-  it('should show API error when postData some results', async () => {
+
+  // Muestra un error de validación si los campos requeridos no están completos
+  it("should show API error when postData some results", async () => {
     const { result } = renderHook(() => useInput());
 
     act(() => {
-      result.current.setInputId('');
-      result.current.setLabel('testLabel');
-      result.current.setPlaceholder('testPlaceholder');
+      result.current.setInputId("");
+      result.current.setLabel("testLabel");
+      result.current.setPlaceholder("testPlaceholder");
       result.current.setIsRequired(true);
     });
 
@@ -161,13 +173,15 @@ describe('useInput Hook', () => {
       })
     );
   });
-  it('should show API error when postData isEmpty', async () => {
+
+  // Muestra un error de validación cuando todos los campos están vacíos
+  it("should show API error when postData isEmpty", async () => {
     const { result } = renderHook(() => useInput());
 
     act(() => {
-      result.current.setInputId('');
-      result.current.setLabel('');
-      result.current.setPlaceholder('');
+      result.current.setInputId("");
+      result.current.setLabel("");
+      result.current.setPlaceholder("");
       result.current.setIsRequired();
     });
 

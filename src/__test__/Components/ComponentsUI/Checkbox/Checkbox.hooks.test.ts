@@ -1,3 +1,6 @@
+// src/__tests__/ComponentsUI/Checkbox/Checkbox.hooks.test.ts
+// Pruebas unitarias para el hook useCheckbox
+
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useToast } from "@chakra-ui/react";
 import { useCheckbox } from "../../../../Components/ComponentsUI/Checkbox/Checkbox.hooks";
@@ -6,7 +9,7 @@ import { checkboxValidationSchema } from "../../../../Components/Utils/Validatio
 import { postData } from "../../../../services/apiService";
 import { ValidationError } from "yup";
 
-// Mockear módulos con `vi` en lugar de `jest`
+// Mock para useToast de Chakra UI y postData
 vi.mock("@chakra-ui/react", () => ({
   useToast: vi.fn(),
 }));
@@ -23,6 +26,7 @@ describe("useCheckbox", () => {
     vi.clearAllMocks();
   });
 
+  // Verifica que el hook inicialice con valores por defecto
   it("should initialize with default values", () => {
     const { result } = renderHook(() => useCheckbox());
     expect(result.current.checkboxId).toBe("");
@@ -31,6 +35,7 @@ describe("useCheckbox", () => {
     expect(result.current.data).toEqual([]);
   });
 
+  // Verifica la actualización de los estados checkboxId, label, y isChecked
   it("should update checkboxId, label, and isChecked", () => {
     const { result } = renderHook(() => useCheckbox());
 
@@ -45,34 +50,40 @@ describe("useCheckbox", () => {
     expect(result.current.isChecked).toBe(true);
   });
 
+  // Verifica el envío de información con datos completos
   it("should send the information when the state is full", async () => {
     const { result } = renderHook(() => useCheckbox());
-  
-    // Simulamos llenar el estado con valores completos
+
     act(() => {
       result.current.setCheckboxId("test-id-full");
       result.current.setLabel("test-label-full");
       result.current.setIsChecked(true);
     });
-  
-    // Mockear la validación y la llamada a postData como exitosa
-    vi.spyOn(checkboxValidationSchema, "validate").mockResolvedValue({ isChecked: true, id:'', label:'' });
+
+    // Mock para validación y envío de datos
+    vi.spyOn(checkboxValidationSchema, "validate").mockResolvedValue({
+      isChecked: true,
+      id: "",
+      label: "",
+    });
     (postData as vi.Mock).mockResolvedValue({ success: true });
-  
-    // Ejecutar la función de guardar
+
     await act(async () => {
       await result.current.handleSave();
     });
-  
-    // Verificar que postData fue llamada con los datos completos
+
+    // Verifica que se llamó a postData y se muestra el toast de éxito
     expect(postData).toHaveBeenCalledWith("checkbox", [
       {
         type: "checkbox",
-        props: { id: "test-id-full", label: "test-label-full", isChecked: true },
+        props: {
+          id: "test-id-full",
+          label: "test-label-full",
+          isChecked: true,
+        },
       },
     ]);
-  
-    // Verificar que se muestra el toast de éxito
+
     expect(toastMock).toHaveBeenCalledWith({
       title: "Guardado exitoso",
       description: "El componente checkbox ha sido guardado correctamente.",
@@ -82,48 +93,49 @@ describe("useCheckbox", () => {
       position: "top",
     });
   });
+
+  // Verifica el error de validación si los datos no son válidos
   it("should show validation error if data is invalid", async () => {
     const { result } = renderHook(() => useCheckbox());
-    
-    vi.spyOn(checkboxValidationSchema, "validate").mockRejectedValueOnce(new ValidationError("Validation error"));
-  
+
+    vi.spyOn(checkboxValidationSchema, "validate").mockRejectedValueOnce(
+      new ValidationError("Validation error")
+    );
+
     await act(async () => {
       await result.current.handleSave();
     });
-  
+
     expect(toastMock).toHaveBeenCalledWith({
       title: "Error de validación",
-      description: "Por favor completa todos los campos requeridos correctamente.",
+      description:
+        "Por favor completa todos los campos requeridos correctamente.",
       status: "error",
       duration: 4000,
       isClosable: true,
       position: "top",
     });
   });
+
+  // Resetea los campos después de guardar exitosamente
   it("should reset checkboxId, label, and isChecked after successful save", async () => {
     const { result } = renderHook(() => useCheckbox());
 
-    // Mock para simular una validación exitosa
     (checkboxValidationSchema.validate as vi.Mock).mockResolvedValue(true);
-    // Mock para simular un envío exitoso de datos
     (postData as vi.Mock).mockResolvedValue({ success: true });
 
-    // Establecer valores en los estados
     act(() => {
       result.current.setCheckboxId("test-id");
       result.current.setLabel("Test Label");
       result.current.setIsChecked(true);
     });
 
-    // Ejecutar el handleSave
     await act(async () => {
       await result.current.handleSave();
     });
 
-    // Verificar que los estados estén vacíos después de guardar
     expect(result.current.checkboxId).toBe("");
     expect(result.current.label).toBe("");
     expect(result.current.isChecked).toBeNull();
   });
-  
 });
