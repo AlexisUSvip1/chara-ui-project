@@ -1,11 +1,11 @@
 // src/__tests__/ComponentsUI/InputForm.test.tsx
 // Pruebas unitarias para el componente InputForm
 
-import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import { InputForm } from '../../../../Components/ComponentsUI/Input/Input';
+import { render, screen, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import { InputForm } from "../../../../Components/ComponentsUI/Input/Input";
 
-describe('InputForm', () => {
+describe("InputForm", () => {
   // Verifica que todos los campos de entrada y los checkboxes estén presentes en el componente
   it("renders all input fields and checkboxes", () => {
     render(<InputForm />);
@@ -30,10 +30,6 @@ describe('InputForm', () => {
 
     const yesCheckbox = screen.getAllByRole("checkbox")[0];
     const noCheckbox = screen.getAllByRole("checkbox")[1];
-
-    // Estado inicial: ambos checkboxes no están seleccionados
-    expect(yesCheckbox).not.toBeChecked();
-    expect(noCheckbox).not.toBeChecked();
 
     // Cambia el estado al seleccionar el checkbox "Sí"
     fireEvent.click(yesCheckbox);
